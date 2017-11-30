@@ -1,0 +1,77 @@
+---
+# defaults file for httpd
+# 此文件是角色的默认变量文件,如果有依赖role则被依赖的role也使用此文件的变量,所以专属于role的变量最好放在vars目录下,但是变量的定义方式是一样的 
+#
+# 定义变量格式为：
+#       k: v   
+#       (1)
+#           如果v中有变量则需要带上引号,比如拼接路径需要将变量和路劲都包含在引号中
+#               apr_util_dir: "{{source_dest}}/apr-util-1.5.4/"
+#       (2)
+#           如果v中没有变量,则不需要引号
+#               source_dest: /usr/local/src
+#
+# 变量的引用:
+#       如果变量的引用再"="后面,则不需要引号,如果在":"后面则需要引号
+#           shell: "{{apr_configure}}"
+#           path={{source_dest}}
+#           with_items:
+#             - "{{unarchive_files}}"
+# 在with_items中的变量如果不带变量则可以:
+#           test:      
+#             - v1
+#             - v2
+#           test2:
+#             - v3
+#             - v4
+#   引用的时候可以:
+#           with_items: test
+#           with_items:
+#             - "test"
+#             - "test2"
+#           {{item}}来引用每一个v
+#
+# 如果在with_items中带变量则只能按照本例子来做
+#            
+
+source_dest: /usr/local/src
+
+apr_file: apr/apr-1.5.2.tar.gz
+apr_install_dir: /usr/local/apr
+apr_dir: "{{source_dest}}/apr-1.5.2/"
+apr_configure: ./configure --prefix={{apr_install_dir}} 
+apr_install: make && make install 
+
+apr_util_file: apr-util/apr-util-1.5.4.tar.gz
+apr_util_install_dir: /usr/local/apr-util
+apr_util_dir: "{{source_dest}}/apr-util-1.5.4/"
+apr_util_configure: ./configure --prefix={{apr_util_install_dir}} --with-apr={{apr_install_dir}} 
+apr_util_install: make && make install 
+
+pcre_file: pcre/pcre-8.38.tar.gz
+pcre_install_dir: /usr/local/pcre
+pcre_dir: "{{source_dest}}/pcre-8.38/"
+pcre_configure: ./configure --prefix={{pcre_install_dir}} 
+pcre_install: make && make install 
+
+httpd_file: httpd/httpd-2.4.25.tar.bz2
+httpd_install_dir: /usr/local/apache24
+httpd_dir: "{{source_dest}}/httpd-2.4.25/"
+httpd_config_dir: /etc/httpd24
+httpd_configure: ./configure --prefix={{httpd_install_dir}} --sysconfdir={{httpd_config_dir}} --enable-so --enable-ssl --enable-cgi --enable-rewrite --with-zlib --with-crypto --with-pcre={{pcre_install_dir}} --with-apr={{apr_install_dir}} --with-apr-util={{apr_util_install_dir}} --enable-moudules=most --enable-mpms-shared-all --with-mpm=prefork
+httpd_install: make && make install 
+
+unarchive_files:
+    - {
+         src: "{{apr_file}}",
+       }
+    - {
+         src: "{{apr_util_file}}",
+      }
+    - {
+         src: "{{pcre_file}}",
+       }
+    - {
+         src: "{{httpd_file}}",
+       }
+

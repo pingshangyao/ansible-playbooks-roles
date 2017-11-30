@@ -1,0 +1,45 @@
+---
+# tasks file for httpd
+- name: unarchive packages
+  unarchive: src={{item.src}} dest={{source_dest}}
+  with_items: "{{unarchive_files}}"
+
+- name: configure apr
+  shell: "{{apr_configure}}"
+  args:
+      chdir: "{{apr_dir}}"
+
+- name: compile and install apr
+  shell: "{{apr_install}}"
+  args:
+      chdir: "{{apr_dir}}"
+
+- name: configure apr-util
+  shell: "{{apr_util_configure}}"
+  args:
+      chdir: "{{apr_util_dir}}"
+
+- name: compile and install apr-util
+  shell: "{{apr_util_install}}"
+  args:
+      chdir: "{{apr_util_dir}}"
+
+- name: configure pcre
+  shell: "{{pcre_configure}}"
+  args:
+      chdir: "{{pcre_dir}}"
+
+- name: compile and install pcre
+  shell: "{{pcre_install}}"
+  args:
+      chdir: "{{pcre_dir}}"
+
+- name: configure httpd
+  shell: "{{httpd_configure}}"
+  args:
+      chdir: "{{httpd_dir}}"
+
+- name: compile and install httpd
+  shell: "{{httpd_install}}"
+  args:
+      chdir: "{{httpd_dir}}"

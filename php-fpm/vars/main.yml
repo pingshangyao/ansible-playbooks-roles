@@ -44,7 +44,6 @@ php_configure: "./configure --prefix={{php_install_dir}} --with-openssl --with-m
 
 php_install: make && make install
 
-# 这种以python属性方式取值php_config.src,php_config.dest的配置方式无论src和dest后面是否是变量形式，其后面的值都要用引号引起来
 php_config:
     - {
         src: php_config/php_pro.ini,

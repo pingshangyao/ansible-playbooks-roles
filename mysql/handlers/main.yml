@@ -1,0 +1,14 @@
+---
+# handlers file for mysql
+#
+- name: chkconfig mysql
+  shell: chkconfig --add mysqld
+
+- name: ldconfig mysql lib
+  shell: ldconfig
+
+- name: souce mysql.sh
+  shell: source /etc/profile.d/mysql.sh
+
+- name: start mysql
+  shell: /etc/init.d/mysqld start

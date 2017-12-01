@@ -1,0 +1,28 @@
+---
+# vars file for mysql
+#
+mysql_file: mysql/mysql-5.6.36-linux-glibc2.5-x86_64.tar.gz
+source_dest: /usr/local
+mysql_source_dir: "{{source_dest}}/mysql-5.6.36-linux-glibc2.5-x86_64"
+mysql_dir: /usr/local/mysql
+mysql_data_dir: /data/mysql/data
+mysql_config:
+    - {
+        src: mysql_config/mysql.server,
+        dest: /etc/init.d/mysqld
+    }
+
+tempalte_item:
+    - {
+        src: my.cnf.j2,
+        dest: /etc/my.cnf
+    }
+    - {
+        src: "mysql.conf.j2",
+        dest: "/etc/ld.so.conf.d/mysql.conf"
+    }
+
+    - {
+        src: "mysql.sh.j2",
+        dest: "/etc/profile.d/mysql.sh"
+    }

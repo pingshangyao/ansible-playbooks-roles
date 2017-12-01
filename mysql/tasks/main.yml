@@ -1,0 +1,84 @@
+---
+# tasks file for mysql
+#模块后面如果换行不用加"-"
+#
+- name: 添加mysql组
+  group:
+      name: mysql
+      gid: 5050
+      state: present
+
+- name: 添加mysql用户
+  user:
+      name: mysql
+      uid: 5050
+      group: mysql
+      shell: /sbin/nologin
+      createhome: no
+
+- name: 解压mysql压缩文件到指定目录
+  unarchive: src={{mysql_file}} dest={{source_dest}}
+
+- name: 修改解压后目录的名字
+  shell:
+      "mv {{mysql_source_dir}} {{mysql_dir}}"
+  
+- name: 创建mysql数据目录
+  file:
+      path: "{{mysql_data_dir}}"
+      owner: mysql
+      group: mysql
+      state: directory
+
+- name: 修改目录权限
+  shell:
+      "chown -R root:mysql {{mysql_dir}}"
+
+- name: 复制服务和配置文件到指定目录下
+  copy: 
+      src: "{{item.src}}"
+      dest: "{{item.dest}}"
+  with_items:
+      - "{{mysql_config}}"
+
+        #- name: 添加到开机启动
+        #shell:
+        #chkconfig --add mysqld
+        #chkconfig mysqld on
+
+- name: 修改mysql服务文件权限
+  file:
+      path: /etc/init.d/mysqld
+      mode: 755
+
+- name: 复制模板文件到指定路径
+  template:
+      src: "{{item.src}}"
+      dest: "{{item.dest}}"
+  with_items:
+      - "{{tempalte_item}}"
+
+        #- name: 重载库文件
+        #shell: ldconfig
+
+  #- name: 重载PATH环境变量
+  #shell: source /etc/profile.d/mysql.sh
+
+- name: 安装数据库
+  shell: 
+      "./scripts/mysql_install_db --user=mysql --datadir={{mysql_data_dir}} --basedir={{mysql_dir}}"
+  args:
+      chdir: "{{mysql_dir}}"
+
+- name: 启动数据库
+  shell: /etc/init.d/mysqld start
+  
+  #- name: 初始化mysql数据库
+  #shell: "{{mysql_dir}}/bin/mysql_secure_installation"
+  
+
+
+
+
+
+

@@ -1,0 +1,33 @@
+---
+# shell这个模块换行的时候不能加"-",如
+#    shell:
+#       "{{shell1}}"
+#       "{{shell2}}"
+# tasks file for php-fpm
+- name: install dependence
+  yum: name={{item}} state=present
+  with_items:
+      - "{{dependence}}"
+
+- name: unarchive php
+  unarchive: src={{php_file}} dest={{source_dest}}
+
+- name: configure php
+  shell:
+      "{{php_configure}}"
+  args:
+      chdir: "{{php_source}}"
+
+- name: compile and install php-fpm
+  shell:
+      "{{php_install}}"
+  args:
+      chdir: "{{php_source}}"
+
+- name: php-fpm config 
+  copy:
+      src: "{{item.src}}"
+      dest: "{{item.dest}}"
+  with_items:
+      - "{{php_config}}"
+

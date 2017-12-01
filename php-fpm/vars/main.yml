@@ -1,0 +1,58 @@
+---
+# vars file for php-fpm
+dependence:
+    - gcc
+    - gcc-c++
+    - libxml2
+    - libxml2-devel
+    - bzip2
+    - bzip2-devel
+    - libmcrypt
+    - libmcrypt-devel
+    - openssl
+    - openssl-devel
+    - libcurl-devel
+    - libjpeg-devel
+    - libpng-devel
+    - freetype-devel
+    - readline
+    - readline-devel
+    - libxslt-devel
+    - perl
+    - perl-devel
+    - psmisc.x86_64
+    - recode
+    - recode-devel
+    - libtidy
+    - libtidy-devel
+    - wget
+    - git
+
+php_file: php/php-5.5.38.tar.bz2
+
+source_dest: /usr/local/src
+
+php_source: "{{source_dest}}/php-5.5.38"
+
+php_install_dir: /usr/local/php
+
+mysql_dir: /usr/local/mysql
+
+mysqli_dir: /usr/local/mysql/bin/mysql_config
+
+php_configure: "./configure --prefix={{php_install_dir}} --with-openssl --with-mysql={{mysql_dir}} --with-mysqli={{mysqli_dir}} --enable-mbstring --with-png-dir --with-jpeg-dir --with-freetype-dir --with-zlib --with-libxml-dir=/usr --enable-xml --enable-sockets --with-mcrypt --with-config-file-path=/etc --with-config-file-scan-dir=/etc/php.d --with-bz2 --enable-fpm --with-gd --enable-gd-native-ttf --enable-pdo --with-gettext --with-curl --with-pdo-mysql  --enable-bcmath --enable-zip --with-zlib-dir --enable-shmop --enable-pcntl --with-xmlrpc --enable-soap --enable-static --enable-ftp"
+
+php_install: make && make install
+
+# 这种以python属性方式取值php_config.src,php_config.dest的配置方式无论src和dest后面是否是变量形式，其后面的值都要用引号引起来
+php_config:
+    - {
+        src: php_config/php_pro.ini,
+        dest: /etc/php.ini,
+    }
+
+    - {
+        src: /usr/local/php/etc/php-fpm.conf.default,
+        dest: /usr/local/php/etc/php-fpm.conf,
+    }
+

@@ -1,0 +1,25 @@
+---
+# tasks file for nginx
+- name: install nginx dependence
+  yum: name={{item}} state=present
+  with_items:
+      - "{{nginx_dependence}}"
+
+- name: unarchive nginx file
+  unarchive: src={{nginx_file}} dest={{source_dest}}
+
+# shell模块在不使用变量的时候可以
+#   shell：
+#     cmd1
+#     cmd2
+# 但是在使用变量的时候不能合并
+
+- name: configure nginx
+  shell: "{{nginx_configure}}"
+  args:
+      chdir: "{{nginx_source_dest}}"
+
+- name: install nginx
+  shell: "{{nginx_install}}"
+  args:
+      chdir: "{{nginx_source_dest}}"

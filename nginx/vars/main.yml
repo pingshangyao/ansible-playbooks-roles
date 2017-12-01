@@ -1,0 +1,16 @@
+---
+# vars file for nginx
+#
+nginx_dependence:
+    - pcre
+    - pcre-devel
+    - zlib
+    - zlib-devel
+    - openssl
+    - openssl-devel
+nginx_file: nginx-1.8.1.tar.gz
+source_dest: /usr/local/src
+nginx_source_dest: "{{source_dest}}/nginx-1.8.1"
+nginx_install_dir: /usr/local/nginx
+nginx_configure: "./configure --prefix={{nginx_install_dir}} --with-http_ssl_module --with-http_flv_module --with-http_stub_status_module --with-http_gzip_static_module --with-pcre"
+nginx_install: make && make install

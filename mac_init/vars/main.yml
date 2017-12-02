@@ -1,0 +1,17 @@
+---
+# vars file for mac_init
+# ansible不能从role的files目录下面获取图片？
+
+repos:
+  - ppa:noobslab/macbuntu
+packages:
+  - macbuntu-os-icons-lts-v7
+  - macbuntu-os-ithemes-lts-v7
+  - gnome-tweak-tool
+  - unity-tweak-tool
+  - albert
+  - plank
+  - macbuntu-os-plank-theme-lts-v7
+
+mac_desk: /etc/ansible/roles/mac_init/files/Mac.po
+mac_logo: /etc/ansible/roles/mac_init/files/launcher_bfb.png

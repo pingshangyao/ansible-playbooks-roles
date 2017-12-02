@@ -1,0 +1,30 @@
+---
+# tasks file for mac_init
+
+- name: 添加macbuntu源
+  apt_repository:
+    repo: "{{item}}"
+  with_items:
+    - "{{repos}}"
+- name: 更新系统
+  apt:
+    update_cache: yes
+    upgrade: dist
+
+- name: 安装软件包
+  apt:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - "{{packages}}"
+
+- name: 将桌面上的ubutnu desktop改为Mac
+  shell:
+    "msgfmt -o unity.mo {{mac_desk}}"
+  args:
+    chdir: /usr/share/locale/zh_CN/LC_MESSAGES/
+     
+- name: 将启动其的logo改为苹果
+  shell:
+    "cp -f {{mac_logo}} /usr/share/unity/icons/"
+

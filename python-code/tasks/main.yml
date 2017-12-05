@@ -83,6 +83,7 @@
       - "{{shell_cmd}}"
 
 - name: 复制python3到缓存目录
+  shell:
       "{{item['python']['python3_cp']}}"
   with_items:
       - "{{shell_cmd}}"

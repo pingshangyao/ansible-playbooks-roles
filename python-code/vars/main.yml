@@ -15,9 +15,10 @@ shell_cmd:
     - oh_my_zsh:
         cmd: sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
     - pyenv:
-        pyenv_root: echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.zshenv
+       pyenv_root: echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.zshenv
         path: echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.zshenv
         pyenv_init: echo 'eval "$(pyenv init -)"' >> ~/.zshenv
+        pyenv_shell: exec "$SHELL"
     - py_virt:
         cmd: echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.zshenv
     - tmux:

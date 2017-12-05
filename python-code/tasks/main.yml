@@ -29,7 +29,7 @@
 
 - name: 将PYENV_HOME变量添加到PATH环境变量中
   shell:
-      "{{item['pyenv']['path']}}"
+      "{{item['pyenv']['pyenv_path']}}"
   with_items:
       - "{{shell_cmd}}"
 

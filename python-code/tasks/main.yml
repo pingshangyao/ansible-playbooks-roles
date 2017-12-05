@@ -21,11 +21,26 @@
   with_items:
       - "{{git_cmd}}"
 
-- name: 安装pyenv
+- name: 添加PYENV_HOME变量
   shell:
       "{{item['pyenv']['pyenv_root']}}"
+  with_items:
+      - "{{shell_cmd}}"
+
+- name: 将PYENV_HOME变量添加到PATH环境变量中
+  shell:
       "{{item['pyenv']['path']}}"
+  with_items:
+      - "{{shell_cmd}}"
+
+- name: 添加pyenv-init到zshenv中
+  shell:
       "{{item['pyenv']['pyenv_init']}}"
+  with_items:
+      - "{{shell_cmd}}"
+
+- name: 重新启动shell
+  shell:
       "{{item['pyenv']['pyenv_shell']}}"
   with_items:
       - "{{shell_cmd}}"
@@ -61,16 +76,25 @@
       path: "{{cache_dir}}"
       state: directory
 
-- name: 复制python2和python3到缓存目录
+- name: 复制python2到缓存目录
   shell:
       "{{item['python']['python2_cp']}}"
+  with_items:
+      - "{{shell_cmd}}"
+
+- name: 复制python3到缓存目录
       "{{item['python']['python3_cp']}}"
   with_items:
       - "{{shell_cmd}}"
 
-- name: 安装python2和python3
+- name: 安装python2
   shell:
       "{{item['python']['python2_install']}}"
+  with_items:
+      - "{{shell_cmd}}"
+
+- name: 安装python3
+  shell:
       "{{item['python']['python3_install']}}"
   with_items:
       - "{{shell_cmd}}"

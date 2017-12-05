@@ -1,0 +1,76 @@
+---
+# tasks file for python-code
+#
+- name: 安装软件包
+  apt:
+      name: "{{item}}"
+      state: present
+  with_items:
+      - "{{packages}}"
+
+- name: 安装oh-my-zsh
+  shell:
+      "{{item['oh_my_zsh']['cmd']}}"
+  with_items:
+      - "{{shell_cmd}}"
+
+- name: 克隆pyenv
+  git:
+      repo: "{{item['pyenv']['pyenv_repo']}}"
+      dest: "{{item['pyenv']['pyenv_dest']}}"
+  with_items:
+      - "{{git_cmd}}"
+
+- name: 安装pyenv
+  shell:
+      "{{item['pyenv']['pyenv_root']}}"
+      "{{item['pyenv']['path']}}"
+      "{{item['pyenv']['pyenv_init']}}"
+      "{{item['pyenv']['pyenv_shell']}}"
+  with_items:
+      - "{{shell_cmd}}"
+
+- name: 克隆pyenv-virtualenv
+  git:
+      repo: "{{item['py_virt']['py_virt_repo']}}"
+      dest: "{{item['py_virt']['py_virt_dest']}}"
+  with_items:
+      - "{{git_cmd}}"
+
+- name: 安装pyenv-virtualenv
+  shell:
+      "{{item['py_virt']['cmd']}}"
+  with_items:
+      - "{{shell_cmd}}"
+
+- name: 克隆tmux配置到家目录
+  git:
+      repo: "{{item['tmux_conf']['tmux_conf_repo']}}"
+      dest: "{{item['tmux_conf']['tmux_conf_dest']}}"
+  with_items:
+      - "{{git_cmd}}"
+
+- name: 安装tmux配置
+  shell:
+      "{{item['tmux']['cmd']}}"
+  with_items:
+      - "{{shell_cmd}}"
+
+- name: 创建cache目录
+  file:
+      path: "{{cache_dir}}"
+      state: directory
+
+- name: 复制python2和python3到缓存目录
+  shell:
+      "{{item['python']['python2_cp']}}"
+      "{{item['python']['python3_cp']}}"
+  with_items:
+      - "{{shell_cmd}}"
+
+- name: 安装python2和python3
+  shell:
+      "{{item['python']['python2_install']}}"
+      "{{item['python']['python3_install']}}"
+  with_items:
+      - "{{shell_cmd}}"

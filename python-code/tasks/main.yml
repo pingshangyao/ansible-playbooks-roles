@@ -34,13 +34,14 @@
       echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.zshenv
 
 - name: 克隆tmux配置到家目录
+#特殊字符需要用引号括起来
   git:
       repo: https://github.com/gpakosz/.tmux.git
       dest: "~"
 
 - name: 安装tmux配置
   shell:
-      ln -s -f ~/.tmux/.tmux.conf && cp ~/.tmux/.tmux.conf.local .
+      "ln -s -f ~/.tmux.conf && cp ~/.tmux.conf.local ."
 
 - name: 创建cache目录
   file:
